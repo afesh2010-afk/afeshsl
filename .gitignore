@@ -1,0 +1,4 @@
+# Ignore raw archives and temporary extraction folder
+my framer website/
+*.zip
+.git/
