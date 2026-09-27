@@ -114,86 +114,112 @@ img {
 }
 
 /* ================= COLORFUL PROFESSIONAL ICON SYSTEM ================= */
-/* Distinct vibrant colors matching the user's reference pictures */
+/* Distinct vibrant containers matching the user's reference pictures */
 .icon-box {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   transition: var(--transition);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .icon-box:hover {
-  transform: scale(1.06);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* Service & Contact Specific Palettes */
 .icon-box.icon-globe {
   background: #e0f2fe;
-  color: #0284c7;
+  border-color: #bae6fd;
 }
 .icon-box.icon-shield {
   background: #dbeafe;
-  color: #2563eb;
+  border-color: #bfdbfe;
 }
 .icon-box.icon-robot {
   background: #f3e8ff;
-  color: #9333ea;
+  border-color: #e9d5ff;
 }
 .icon-box.icon-palette {
   background: #ffe4e6;
-  color: #e11d48;
+  border-color: #fecdd3;
 }
 .icon-box.icon-email {
-  background: #ede9fe;
-  color: #7c3aed;
+  background: #fef2f2;
+  border-color: #fee2e2;
 }
 .icon-box.icon-github {
-  background: #ffedd5;
-  color: #ea580c;
+  background: #f8fafc;
+  border-color: #e2e8f0;
 }
 .icon-box.icon-whatsapp {
-  background: #dcfce7;
-  color: #16a34a;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
 }
 .icon-box.icon-location {
-  background: #fce7f3;
-  color: #db2777;
+  background: #fef2f2;
+  border-color: #fecaca;
 }
 .icon-box.icon-code {
   background: #e0e7ff;
-  color: #4f46e5;
+  border-color: #c7d2fe;
 }
 .icon-box.icon-terminal {
   background: #fee2e2;
-  color: #dc2626;
+  border-color: #fecaca;
 }
 .icon-box.icon-cpu {
   background: #fef3c7;
-  color: #d97706;
+  border-color: #fde68a;
 }
 
 /* Dark Mode Tint Adjustments */
-[data-theme="dark"] .icon-box.icon-globe { background: rgba(2, 132, 199, 0.2); color: #38bdf8; }
-[data-theme="dark"] .icon-box.icon-shield { background: rgba(37, 99, 235, 0.2); color: #60a5fa; }
-[data-theme="dark"] .icon-box.icon-robot { background: rgba(147, 51, 234, 0.2); color: #c084fc; }
-[data-theme="dark"] .icon-box.icon-palette { background: rgba(225, 29, 72, 0.2); color: #fb7185; }
-[data-theme="dark"] .icon-box.icon-email { background: rgba(124, 58, 237, 0.2); color: #a78bfa; }
-[data-theme="dark"] .icon-box.icon-github { background: rgba(234, 88, 12, 0.2); color: #fb923c; }
-[data-theme="dark"] .icon-box.icon-whatsapp { background: rgba(22, 163, 74, 0.2); color: #4ade80; }
-[data-theme="dark"] .icon-box.icon-location { background: rgba(219, 39, 119, 0.2); color: #f472b6; }
-[data-theme="dark"] .icon-box.icon-code { background: rgba(79, 70, 229, 0.2); color: #818cf8; }
-[data-theme="dark"] .icon-box.icon-terminal { background: rgba(220, 38, 38, 0.2); color: #f87171; }
-[data-theme="dark"] .icon-box.icon-cpu { background: rgba(217, 119, 6, 0.2); color: #fbbf24; }
+[data-theme="dark"] .icon-box.icon-globe { background: rgba(14, 165, 233, 0.15); border-color: rgba(14, 165, 233, 0.3); }
+[data-theme="dark"] .icon-box.icon-shield { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); }
+[data-theme="dark"] .icon-box.icon-robot { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); }
+[data-theme="dark"] .icon-box.icon-palette { background: rgba(244, 63, 94, 0.15); border-color: rgba(244, 63, 94, 0.3); }
+[data-theme="dark"] .icon-box.icon-email { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
+[data-theme="dark"] .icon-box.icon-github { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15); }
+[data-theme="dark"] .icon-box.icon-whatsapp { background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.3); }
+[data-theme="dark"] .icon-box.icon-location { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
+[data-theme="dark"] .icon-box.icon-code { background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.3); }
+[data-theme="dark"] .icon-box.icon-terminal { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
+[data-theme="dark"] .icon-box.icon-cpu { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3); }
+
+/* Real Vector Colorful Icons */
+.real-service-icon,
+.real-brand-icon,
+.real-icon {
+  width: 36px;
+  height: 36px;
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.real-service-icon-sm {
+  width: 22px;
+  height: 22px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.icon-box:hover .real-service-icon,
+.icon-box:hover .real-brand-icon,
+.icon-box:hover .real-icon {
+  transform: scale(1.12);
+}
 
 /* SVG Icon Base Sizes */
-.svg-icon {
-  width: 24px;
-  height: 24px;
+.svg-icon,
+.svg-icon-lg,
+.svg-icon-sm {
   stroke-width: 2;
   stroke: currentColor;
   fill: none;
@@ -202,6 +228,11 @@ img {
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
+}
+
+.svg-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .svg-icon-lg {
