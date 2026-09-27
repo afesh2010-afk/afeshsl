@@ -1,7 +1,7 @@
 /* ===================================================================
    AFESH S L — Personal Portfolio Theme
    Modern, ultra-clean aesthetic with Plus Jakarta Sans & Space Grotesk
-   Professional SVG icons, zero emojis, zero green colors (except WA brand)
+   Colorful professional vector icons, harmonious palette, zero green dots
    =================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
@@ -11,7 +11,7 @@
   --bg-secondary: #ffffff;
   --bg-card: #ffffff;
   --bg-card-subtle: #fcf5f0;
-  --bg-nav: rgba(255, 249, 246, 0.9);
+  --bg-nav: rgba(255, 249, 246, 0.92);
   --border-color: rgba(30, 27, 25, 0.08);
   --border-hover: rgba(224, 86, 56, 0.35);
   --text-primary: #121110;
@@ -24,12 +24,8 @@
   --accent-glow: rgba(224, 86, 56, 0.3);
   --wa-brand: #25D366;
   --wa-hover: #1ebd5a;
-  --dark-hero: #161514;
-  --dark-hero-card: #201e1d;
-  --dark-text: #ffffff;
-  --dark-muted: #a89f99;
-  --radius-sm: 8px;
-  --radius-md: 14px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
   --radius-lg: 24px;
   --radius-full: 9999px;
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.03);
@@ -47,7 +43,7 @@
   --bg-secondary: #161514;
   --bg-card: #1c1a19;
   --bg-card-subtle: #24211f;
-  --bg-nav: rgba(15, 14, 13, 0.9);
+  --bg-nav: rgba(15, 14, 13, 0.92);
   --border-color: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(244, 120, 94, 0.45);
   --text-primary: #fcfbfa;
@@ -58,8 +54,6 @@
   --accent-light: rgba(244, 114, 85, 0.16);
   --accent-soft: rgba(244, 114, 85, 0.15);
   --accent-glow: rgba(244, 114, 85, 0.35);
-  --dark-hero: #161514;
-  --dark-hero-card: #201e1d;
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
@@ -119,10 +113,87 @@ img {
   position: relative;
 }
 
-/* Professional SVG Icons Helper */
+/* ================= COLORFUL PROFESSIONAL ICON SYSTEM ================= */
+/* Distinct vibrant colors matching the user's reference pictures */
+.icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.icon-box:hover {
+  transform: scale(1.06);
+}
+
+/* Service & Contact Specific Palettes */
+.icon-box.icon-globe {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+.icon-box.icon-shield {
+  background: #dbeafe;
+  color: #2563eb;
+}
+.icon-box.icon-robot {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+.icon-box.icon-palette {
+  background: #ffe4e6;
+  color: #e11d48;
+}
+.icon-box.icon-email {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+.icon-box.icon-github {
+  background: #ffedd5;
+  color: #ea580c;
+}
+.icon-box.icon-whatsapp {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.icon-box.icon-location {
+  background: #fce7f3;
+  color: #db2777;
+}
+.icon-box.icon-code {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+.icon-box.icon-terminal {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.icon-box.icon-cpu {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+/* Dark Mode Tint Adjustments */
+[data-theme="dark"] .icon-box.icon-globe { background: rgba(2, 132, 199, 0.2); color: #38bdf8; }
+[data-theme="dark"] .icon-box.icon-shield { background: rgba(37, 99, 235, 0.2); color: #60a5fa; }
+[data-theme="dark"] .icon-box.icon-robot { background: rgba(147, 51, 234, 0.2); color: #c084fc; }
+[data-theme="dark"] .icon-box.icon-palette { background: rgba(225, 29, 72, 0.2); color: #fb7185; }
+[data-theme="dark"] .icon-box.icon-email { background: rgba(124, 58, 237, 0.2); color: #a78bfa; }
+[data-theme="dark"] .icon-box.icon-github { background: rgba(234, 88, 12, 0.2); color: #fb923c; }
+[data-theme="dark"] .icon-box.icon-whatsapp { background: rgba(22, 163, 74, 0.2); color: #4ade80; }
+[data-theme="dark"] .icon-box.icon-location { background: rgba(219, 39, 119, 0.2); color: #f472b6; }
+[data-theme="dark"] .icon-box.icon-code { background: rgba(79, 70, 229, 0.2); color: #818cf8; }
+[data-theme="dark"] .icon-box.icon-terminal { background: rgba(220, 38, 38, 0.2); color: #f87171; }
+[data-theme="dark"] .icon-box.icon-cpu { background: rgba(217, 119, 6, 0.2); color: #fbbf24; }
+
+/* SVG Icon Base Sizes */
 .svg-icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   stroke-width: 2;
   stroke: currentColor;
   fill: none;
@@ -134,13 +205,13 @@ img {
 }
 
 .svg-icon-lg {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
 }
 
 .svg-icon-sm {
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
 }
 
 /* Section Header Badges */
@@ -321,14 +392,14 @@ img {
 }
 
 .btn-whatsapp {
-  background: linear-gradient(135deg, var(--wa-brand), var(--wa-hover));
+  background: linear-gradient(135deg, #25D366, #1ebe5d);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
 }
 
 .btn-whatsapp:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
   color: #ffffff;
 }
 
@@ -363,7 +434,7 @@ img {
   padding: 6px;
 }
 
-/* ================= Hero Section (Exact Screenshot Match) ================= */
+/* ================= Hero Section ================= */
 .hero {
   padding-top: 150px;
   padding-bottom: 90px;
@@ -474,17 +545,6 @@ img {
   border-color: var(--border-hover);
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
-}
-
-.service-icon-box {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-md);
-  background: var(--accent-light);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .service-title {
@@ -618,8 +678,8 @@ img {
 .feature-box-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 .feature-box h4 {
@@ -682,24 +742,13 @@ img {
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .skill-card:hover {
   border-color: var(--border-hover);
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
-}
-
-.skill-card-icon-box {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-sm);
-  background: var(--accent-light);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .skill-card-title {
@@ -731,24 +780,27 @@ img {
   color: var(--text-primary);
 }
 
-/* ================= 03 - Cybersecurity Showcase ================= */
-.security-dark-banner {
-  background: var(--dark-hero);
-  color: var(--dark-text);
+/* ================= 03 - Cybersecurity Showcase (NO BLACKOUT) ================= */
+/* Redesigned to blend cleanly into the elegant theme without dark blackout box */
+.security-showcase-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 60px 48px;
+  padding: 48px;
   margin-bottom: 40px;
+  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.security-dark-banner .section-title {
-  color: #ffffff;
-}
-
-.security-dark-banner .section-desc {
-  color: var(--dark-muted);
+.security-showcase-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #2563eb, var(--accent), #9333ea);
 }
 
 .security-cards-grid {
@@ -759,42 +811,31 @@ img {
 }
 
 .sec-card {
-  background: var(--dark-hero-card);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 24px;
   transition: var(--transition);
 }
 
 .sec-card:hover {
-  border-color: var(--accent);
+  border-color: var(--border-hover);
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.sec-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-sm);
-  background: rgba(224, 86, 56, 0.15);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 14px;
+  box-shadow: var(--shadow-md);
 }
 
 .sec-card h4 {
   font-family: var(--font-display);
   font-size: 18px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-primary);
+  margin-top: 14px;
   margin-bottom: 8px;
 }
 
 .sec-card p {
   font-size: 13.5px;
-  color: var(--dark-muted);
+  color: var(--text-secondary);
   line-height: 1.55;
 }
 
@@ -953,8 +994,8 @@ img {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: var(--accent-light);
-  color: var(--accent);
+  background: #ffedd5;
+  color: #ea580c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1159,29 +1200,12 @@ img {
 
 .contact-item.wa-highlight {
   border-color: rgba(37, 211, 102, 0.4);
-  background: linear-gradient(to right, var(--bg-card), rgba(37, 211, 102, 0.04));
+  background: linear-gradient(to right, var(--bg-card), rgba(37, 211, 102, 0.05));
 }
 
 .contact-item.wa-highlight:hover {
-  border-color: var(--wa-brand);
+  border-color: #25D366;
   box-shadow: 0 4px 16px rgba(37, 211, 102, 0.15);
-}
-
-.contact-icon-box {
-  width: 46px;
-  height: 46px;
-  border-radius: var(--radius-sm);
-  background: var(--accent-light);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.contact-icon-box.wa-icon {
-  background: rgba(37, 211, 102, 0.12);
-  color: var(--wa-brand);
 }
 
 .contact-item-title {
@@ -1303,16 +1327,18 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
   transition: var(--transition);
 }
 
 .social-circle-link:hover {
-  background: var(--accent);
-  color: #ffffff;
-  border-color: var(--accent);
   transform: translateY(-2px);
+  border-color: var(--accent);
 }
+
+.social-circle-link.footer-wa { color: #16a34a; background: #dcfce7; }
+.social-circle-link.footer-gh { color: #ea580c; background: #ffedd5; }
+.social-circle-link.footer-mail { color: #7c3aed; background: #ede9fe; }
+.social-circle-link.footer-top { color: var(--text-primary); background: var(--bg-card-subtle); }
 
 .footer-bottom {
   border-top: 1px solid var(--border-color);
@@ -1374,8 +1400,8 @@ img {
     padding: 70px 0;
   }
 
-  .security-dark-banner {
-    padding: 36px 24px;
+  .security-showcase-box {
+    padding: 30px 20px;
   }
 
   .project-card {
