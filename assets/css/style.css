@@ -336,38 +336,175 @@ img {
   box-shadow: 0 2px 8px var(--accent-glow);
 }
 
+/* ================= SEGMENTED TAB NAVIGATION ================= */
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 4px;
   list-style: none;
+  background: rgba(30, 27, 25, 0.04);
+  padding: 5px 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .nav-links {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .nav-link {
-  font-size: 14.5px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--text-secondary);
-  padding: 6px 0;
-  position: relative;
+  padding: 7px 15px;
+  border-radius: var(--radius-full);
+  transition: var(--transition);
+  display: inline-block;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
   color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] .nav-link:hover {
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .nav-link.active {
-  color: var(--text-primary);
+  color: #ffffff !important;
+  background: var(--accent) !important;
+  box-shadow: 0 4px 14px var(--accent-glow);
 }
 
-.nav-link.active::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
+/* ================= TAB SYSTEM (MULTI-PAGE TABS) ================= */
+.tab-pane {
+  display: none !important;
+  opacity: 0;
+  transform: translateY(12px);
+  min-height: calc(100vh - 200px);
+}
+
+.tab-pane.active {
+  display: block !important;
+  opacity: 1;
+  transform: translateY(0);
+  animation: tabFadeIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Home Tab Quick Navigation Cards */
+.home-tab-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 44px;
   width: 100%;
-  height: 2.5px;
-  background-color: var(--accent);
-  border-radius: 2px;
+}
+
+.home-tab-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.home-tab-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.home-tab-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.home-tab-card p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.tab-card-arrow {
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+.home-tab-card:hover .tab-card-arrow {
+  transform: translateX(4px);
+}
+
+/* Mobile Quick Tabs Strip */
+.mobile-tab-strip {
+  display: none;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg-nav);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.mobile-tab-strip::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .mobile-tab-strip {
+    display: flex;
+    position: sticky;
+    top: 70px;
+    z-index: 90;
+  }
+}
+
+.mobile-tab-btn {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+  font-family: inherit;
+}
+
+.mobile-tab-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 10px var(--accent-glow);
 }
 
 .nav-actions {
@@ -1395,23 +1532,33 @@ img {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .nav-links {
     display: none;
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 70px;
     left: 0;
     width: 100%;
     background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
     flex-direction: column;
-    padding: 20px 24px;
-    gap: 16px;
+    padding: 16px 20px;
+    gap: 8px;
     box-shadow: var(--shadow-lg);
+    border-radius: 0 0 20px 20px;
+    z-index: 999;
   }
 
   .nav-links.show {
     display: flex;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 11px 18px;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+    text-align: left;
   }
 
   .mobile-menu-btn {

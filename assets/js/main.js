@@ -34,47 +34,95 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
   }
 
-  // ================= 2. Mobile Navigation Menu =================
+  // ================= 2. Multi-Tab Navigation & View Switcher =================
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const navLinks = document.getElementById('nav-links');
+  const tabPanes = document.querySelectorAll('.tab-pane');
 
+  function switchTab(targetId) {
+    if (!targetId) targetId = 'home';
+    const cleanId = targetId.replace(/^#/, '').trim();
+    const targetPane = document.getElementById(cleanId);
+
+    if (!targetPane || !targetPane.classList.contains('tab-pane')) {
+      return false;
+    }
+
+    // Hide all tab panes
+    tabPanes.forEach(pane => {
+      pane.classList.remove('active');
+    });
+
+    // Show target tab pane
+    targetPane.classList.add('active');
+
+    // Update active state on all nav-link and mobile-tab-btn elements
+    document.querySelectorAll('.nav-link, .mobile-tab-btn').forEach(link => {
+      const linkHref = (link.getAttribute('href') || link.getAttribute('data-tab-target') || '').replace(/^#/, '').trim();
+      if (linkHref === cleanId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // Close mobile three-bar menu if open
+    if (navLinks && navLinks.classList.contains('show')) {
+      navLinks.classList.remove('show');
+      if (mobileMenuBtn) mobileMenuBtn.innerHTML = '☰';
+    }
+
+    // Smooth scroll to top of view
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Update hash in address bar without scrolling jump
+    if (window.location.hash !== `#${cleanId}`) {
+      if (history.pushState) {
+        history.pushState(null, null, `#${cleanId}`);
+      } else {
+        window.location.hash = `#${cleanId}`;
+      }
+    }
+
+    return true;
+  }
+
+  // Toggle mobile three-bar menu
   if (mobileMenuBtn && navLinks) {
     mobileMenuBtn.addEventListener('click', () => {
       navLinks.classList.toggle('show');
       mobileMenuBtn.innerHTML = navLinks.classList.contains('show') ? '✕' : '☰';
     });
-
-    navLinks.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('show');
-        mobileMenuBtn.innerHTML = '☰';
-      });
-    });
   }
 
-  // ================= 3. ScrollSpy for Active Nav Link =================
-  const sections = document.querySelectorAll('section[id]');
-  const navItems = document.querySelectorAll('.nav-link');
+  // Intercept all links targeting tab panes across header, cards, hero, and footer
+  document.body.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"], button[data-tab-target]');
+    if (!link) return;
 
-  window.addEventListener('scroll', () => {
-    let current = '';
-    const scrollPosition = window.pageYOffset + 160;
+    const href = link.getAttribute('href') || link.getAttribute('data-tab-target');
+    if (!href || href === '#' || href === '#!') return;
 
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-      if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-        current = section.getAttribute('id');
-      }
-    });
+    const targetId = href.replace(/^#/, '').trim();
+    const targetElement = document.getElementById(targetId);
 
-    navItems.forEach(item => {
-      item.classList.remove('active');
-      if (item.getAttribute('href') === `#${current}`) {
-        item.classList.add('active');
-      }
-    });
+    if (targetElement && targetElement.classList.contains('tab-pane')) {
+      e.preventDefault();
+      switchTab(targetId);
+    }
   });
+
+  // Handle browser Back / Forward buttons
+  window.addEventListener('popstate', () => {
+    const hash = window.location.hash || '#home';
+    switchTab(hash);
+  });
+
+  // Initialize active tab from URL hash on first page load
+  const initialHash = window.location.hash || '#home';
+  if (!switchTab(initialHash)) {
+    switchTab('home');
+  }
 
   // ================= 4. Interactive Tabs: Skills Filter =================
   const skillTabs = document.querySelectorAll('[data-skill-tab]');

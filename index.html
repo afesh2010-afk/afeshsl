@@ -58,9 +58,21 @@
     </div>
   </header>
 
+  <!-- Mobile Quick Tab Switcher Strip -->
+  <nav class="mobile-tab-strip" aria-label="Sections Tab Switcher">
+    <button class="mobile-tab-btn active" data-tab-target="#home">Home</button>
+    <button class="mobile-tab-btn" data-tab-target="#services">Services</button>
+    <button class="mobile-tab-btn" data-tab-target="#about">About</button>
+    <button class="mobile-tab-btn" data-tab-target="#skills">Skills</button>
+    <button class="mobile-tab-btn" data-tab-target="#cybersecurity">Security</button>
+    <button class="mobile-tab-btn" data-tab-target="#projects">Projects</button>
+    <button class="mobile-tab-btn" data-tab-target="#faq">FAQ</button>
+    <button class="mobile-tab-btn" data-tab-target="#contact">Contact</button>
+  </nav>
+
   <main>
-    <!-- ================= HERO SECTION ================= -->
-    <section class="section hero" id="home">
+    <!-- ================= HOME TAB (HERO + QUICK PORTAL) ================= -->
+    <section class="section hero tab-pane active" id="home">
       <div class="container hero-content">
         <!-- Status Pill: NO GREEN (warm glowing coral dot) -->
         <div class="status-pill">
@@ -89,11 +101,58 @@
             <span>WhatsApp Me</span>
           </a>
         </div>
+
+        <!-- Quick Tabs Navigation on Home -->
+        <div class="home-tab-cards">
+          <a href="#services" class="home-tab-card">
+            <div class="icon-box icon-globe" style="width:48px;height:48px;border-radius:14px;">
+              <svg class="real-service-icon-sm" viewBox="0 0 48 48"><rect x="4" y="7" width="40" height="34" rx="7" fill="url(#webGrad)"/><circle cx="10" cy="11.5" r="2" fill="#FF5F56"/><path d="M17 23 L11 28.5 L17 34" stroke="#FFF" stroke-width="2.6" fill="none"/></svg>
+            </div>
+            <div>
+              <h4>Services</h4>
+              <p>Full-Stack, AI &amp; UI/UX</p>
+            </div>
+            <span class="tab-card-arrow">➔</span>
+          </a>
+
+          <a href="#about" class="home-tab-card">
+            <div class="icon-box icon-robot" style="width:48px;height:48px;border-radius:14px;">
+              <svg class="real-service-icon-sm" viewBox="0 0 48 48"><rect x="7" y="7" width="34" height="34" rx="9" fill="url(#aiGrad)"/><path d="M24 13 C24 19 18 24 12 24 C18 24 24 29 24 35 C24 29 30 24 36 24 C30 24 24 19 24 13 Z" fill="#FFF"/></svg>
+            </div>
+            <div>
+              <h4>About AFESH</h4>
+              <p>+1 Student Builder Story</p>
+            </div>
+            <span class="tab-card-arrow">➔</span>
+          </a>
+
+          <a href="#cybersecurity" class="home-tab-card">
+            <div class="icon-box icon-shield" style="width:48px;height:48px;border-radius:14px;">
+              <svg class="real-service-icon-sm" viewBox="0 0 48 48"><path d="M24 4 L40 10 V23 C40 33.5 33 41.5 24 44.5 C15 41.5 8 33.5 8 23 V10 Z" fill="url(#shieldGrad)"/><rect x="18" y="23" width="12" height="10" rx="2.5" fill="url(#goldGrad)"/></svg>
+            </div>
+            <div>
+              <h4>Cybersecurity</h4>
+              <p>Defensive Labs &amp; Audits</p>
+            </div>
+            <span class="tab-card-arrow">➔</span>
+          </a>
+
+          <a href="#projects" class="home-tab-card">
+            <div class="icon-box icon-code" style="width:48px;height:48px;border-radius:14px;">
+              <svg viewBox="0 0 24 24" width="22" height="22"><rect width="20" height="16" x="2" y="4" rx="3" fill="#2563EB"/><circle cx="5" cy="7" r="0.9" fill="#FF5F56"/><path d="M8 12 L5 14.5 L8 17" stroke="#FFF" stroke-width="1.6" fill="none"/></svg>
+            </div>
+            <div>
+              <h4>Projects</h4>
+              <p>Mr Gubot Automotive &amp; Labs</p>
+            </div>
+            <span class="tab-card-arrow">➔</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- ================= SERVICES SECTION ================= -->
-    <section class="section" id="services" style="background: var(--bg-card-subtle);">
+    <!-- ================= SERVICES TAB ================= -->
+    <section class="section tab-pane" id="services">
       <div class="container">
         <span class="section-tag">Services</span>
         <h2 class="section-title">What I can build for you.</h2>
@@ -235,8 +294,8 @@
       </div>
     </section>
 
-    <!-- ================= ABOUT SECTION ================= -->
-    <section class="section" id="about">
+    <!-- ================= ABOUT TAB ================= -->
+    <section class="section tab-pane" id="about">
       <div class="container">
         <div class="about-grid">
           <!-- Profile Card -->
@@ -327,8 +386,8 @@
       </div>
     </section>
 
-    <!-- ================= SKILLS SECTION (WITH TABS) ================= -->
-    <section class="section" id="skills" style="background: var(--bg-card-subtle);">
+    <!-- ================= SKILLS TAB ================= -->
+    <section class="section tab-pane" id="skills">
       <div class="container">
         <span class="section-tag">Technology Ecosystem</span>
         <h2 class="section-title">What I work with.</h2>
@@ -450,8 +509,8 @@
       </div>
     </section>
 
-    <!-- ================= CYBERSECURITY PRACTICE (NO BLACKOUT) ================= -->
-    <section class="section" id="cybersecurity">
+    <!-- ================= CYBERSECURITY TAB ================= -->
+    <section class="section tab-pane" id="cybersecurity">
       <div class="container">
         <!-- Clean, Bright Security Showcase -->
         <div class="security-showcase-box">
@@ -551,8 +610,8 @@
       </div>
     </section>
 
-    <!-- ================= PROJECTS SECTION (WITH TABS) ================= -->
-    <section class="section" id="projects" style="background: var(--bg-card-subtle);">
+    <!-- ================= PROJECTS TAB ================= -->
+    <section class="section tab-pane" id="projects">
       <div class="container">
         <span class="section-tag">Selected Work</span>
         <h2 class="section-title">Projects &amp; Creations.</h2>
@@ -631,8 +690,8 @@
       </div>
     </section>
 
-    <!-- ================= FAQ SECTION ================= -->
-    <section class="section" id="faq">
+    <!-- ================= FAQ TAB ================= -->
+    <section class="section tab-pane" id="faq">
       <div class="container">
         <div style="text-align: center; max-width: 650px; margin: 0 auto 50px;">
           <span class="section-tag">FAQ</span>
@@ -686,8 +745,8 @@
       </div>
     </section>
 
-    <!-- ================= CONTACT SECTION ================= -->
-    <section class="section" id="contact" style="background: var(--bg-card-subtle);">
+    <!-- ================= CONTACT TAB ================= -->
+    <section class="section tab-pane" id="contact">
       <div class="container">
         <span class="section-tag">Contact</span>
         <h2 class="section-title">Let's build something meaningful.</h2>
