@@ -1,37 +1,40 @@
 /**
- * AFESH S L — Personal Portfolio Scripts
- * Modular, clean, lightweight JavaScript
+ * AFESH S L — Elite Portfolio Interactivity
+ * High-performance, lightweight Vanilla JS
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ================= 1. Theme Toggle (Dark / Light) =================
+  // ================= 1. Theme Toggle (Dark Luxe by default) =================
   const themeToggleBtn = document.getElementById('theme-toggle-btn');
-  const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
+  const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
   
-  if (savedTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
+  if (savedTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    updateThemeIcon(false);
+  } else {
+    document.documentElement.removeAttribute('data-theme'); // default is dark
     updateThemeIcon(true);
   }
 
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
         document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('portfolio-theme', 'light');
-        updateThemeIcon(false);
-      } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('portfolio-theme', 'dark');
         updateThemeIcon(true);
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('portfolio-theme', 'light');
+        updateThemeIcon(false);
       }
     });
   }
 
   function updateThemeIcon(isDark) {
     if (!themeToggleBtn) return;
-    themeToggleBtn.innerHTML = isDark ? '☀️' : '🌙';
-    themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    themeToggleBtn.innerHTML = isDark ? '🌙' : '☀️';
+    themeToggleBtn.setAttribute('title', isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode');
   }
 
   // ================= 2. Mobile Navigation Menu =================
@@ -44,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileMenuBtn.innerHTML = navLinks.classList.contains('show') ? '✕' : '☰';
     });
 
-    // Close mobile menu when clicking a link
     navLinks.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('show');
@@ -53,13 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ================= 3. ScrollSpy for Active Nav Link =================
+  // ================= 3. ScrollSpy for Sticky Navigation =================
   const sections = document.querySelectorAll('section[id]');
   const navItems = document.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
     let current = '';
-    const scrollPosition = window.pageYOffset + 150;
+    const scrollPosition = window.pageYOffset + 160;
 
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
@@ -77,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 4. Interactive Tabs: Skills Filter =================
+  // ================= 4. Interactive Tabs: Skills Category Filter =================
   const skillTabs = document.querySelectorAll('[data-skill-tab]');
   const skillCards = document.querySelectorAll('.skill-card');
 
@@ -104,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 5. Interactive Tabs: Projects Filter =================
+  // ================= 5. Interactive Tabs: Projects Category Filter =================
   const projectTabs = document.querySelectorAll('[data-project-tab]');
-  const projectCards = document.querySelectorAll('.project-card, .lab-card, .upcoming-project-card');
+  const projectCards = document.querySelectorAll('[data-project-type]');
 
   projectTabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -130,9 +132,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 6. Contact Form Submission =================
+  // ================= 6. Project Type Pill Selection in Contact Form =================
+  let selectedProjectType = 'Full-Stack Web App';
+  const typePills = document.querySelectorAll('.type-pill-btn');
+  typePills.forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      e.preventDefault();
+      typePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      selectedProjectType = pill.getAttribute('data-type') || pill.textContent.trim();
+    });
+  });
+
+  // ================= 7. Contact Form & WhatsApp Integration =================
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
+  const whatsappDirectBtn = document.getElementById('whatsapp-direct-btn');
+
+  if (whatsappDirectBtn) {
+    whatsappDirectBtn.addEventListener('click', (e) => {
+      const name = document.getElementById('sender-name')?.value.trim() || 'Client';
+      const msg = document.getElementById('sender-message')?.value.trim() || 'I would like to discuss a project with you.';
+      const text = encodeURIComponent(`Hi AFESH! My name is ${name}. I am looking for [${selectedProjectType}]. Message: ${msg}`);
+      // Open WhatsApp chat directly
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+    });
+  }
 
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
@@ -146,19 +171,20 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Display friendly success message
       if (formStatus) {
-        formStatus.textContent = `Thank you, ${name}! Opening your email client to send your message to AFESH S L...`;
+        formStatus.textContent = `Thank you, ${name}! Redirecting to email with your inquiry for [${selectedProjectType}]...`;
         formStatus.className = 'form-status-msg success';
         formStatus.style.display = 'block';
       }
 
-      // Open mailto link as direct communication fallback
-      const subject = encodeURIComponent(`Portfolio Inquiry from ${name}`);
-      const body = encodeURIComponent(`Hi AFESH,\n\n${message}\n\nFrom: ${name} (${email})`);
+      const subject = encodeURIComponent(`Project Inquiry: ${selectedProjectType} from ${name}`);
+      const body = encodeURIComponent(
+        `Hi AFESH,\n\nI'm interested in working together on: ${selectedProjectType}\n\nProject Overview:\n${message}\n\nClient Contact Details:\nName: ${name}\nEmail: ${email}`
+      );
+
       setTimeout(() => {
         window.location.href = `mailto:afesh2010@gmail.com?subject=${subject}&body=${body}`;
-      }, 800);
+      }, 700);
 
       contactForm.reset();
     });
