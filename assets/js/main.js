@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileMenuBtn.innerHTML = navLinks.classList.contains('show') ? '✕' : '☰';
     });
 
-    // Close mobile menu when clicking a link
     navLinks.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('show');
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', () => {
     let current = '';
-    const scrollPosition = window.pageYOffset + 150;
+    const scrollPosition = window.pageYOffset + 160;
 
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
@@ -145,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ================= 7. Contact Form Submission =================
+  // ================= 7. WhatsApp Direct Project Inquiry =================
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
 
@@ -154,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const name = document.getElementById('sender-name').value.trim();
       const email = document.getElementById('sender-email').value.trim();
+      const service = document.getElementById('sender-service') ? document.getElementById('sender-service').value : 'Project Inquiry';
       const message = document.getElementById('sender-message').value.trim();
 
       if (!name || !email || !message) {
@@ -161,17 +161,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // Display friendly status message
       if (formStatus) {
-        formStatus.textContent = `Thank you, ${name}! Opening your email client to send your message to AFESH S L...`;
+        formStatus.textContent = `Connecting you directly to AFESH's WhatsApp (+91 9744333783)...`;
         formStatus.className = 'form-status-msg success';
         formStatus.style.display = 'block';
       }
 
-      const subject = encodeURIComponent(`Portfolio Inquiry from ${name}`);
-      const body = encodeURIComponent(`Hi AFESH,\n\n${message}\n\nFrom: ${name} (${email})`);
+      // Format WhatsApp Message
+      const waNumber = '919744333783';
+      const formattedText = `*New Project Inquiry (via afeshsl.in)*%0A%0A` +
+        `*Name:* ${encodeURIComponent(name)}%0A` +
+        `*Email:* ${encodeURIComponent(email)}%0A` +
+        `*Service:* ${encodeURIComponent(service)}%0A%0A` +
+        `*Project Details:*%0A${encodeURIComponent(message)}`;
+
+      const waUrl = `https://wa.me/${waNumber}?text=${formattedText}`;
+
+      // Open WhatsApp in a new tab or app window
       setTimeout(() => {
-        window.location.href = `mailto:afesh2010@gmail.com?subject=${subject}&body=${body}`;
-      }, 800);
+        window.open(waUrl, '_blank');
+      }, 500);
 
       contactForm.reset();
     });
