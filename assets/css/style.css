@@ -851,44 +851,7 @@ img {
 .faq-grid [data-reveal]:nth-child(3) { transition-delay: 0.16s; }
 .faq-grid [data-reveal]:nth-child(4) { transition-delay: 0.22s; }
 
-/* Desktop Ambient Cursor Follower */
-.ambient-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(36, 87, 255, 0.4);
-  background: rgba(36, 87, 255, 0.04);
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
-              height 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.2s ease, 
-              background 0.2s ease, 
-              opacity 0.25s ease;
-  opacity: 0;
-  will-change: transform, width, height;
-}
 
-.ambient-cursor.active {
-  opacity: 1;
-}
-
-.ambient-cursor.hovering {
-  width: 44px;
-  height: 44px;
-  border-color: rgba(36, 87, 255, 0.7);
-  background: rgba(36, 87, 255, 0.08);
-}
-
-@media (hover: none) or (pointer: coarse) {
-  .ambient-cursor {
-    display: none !important;
-  }
-}
 
 /* ================= 02. SERVICES SECTION (#services) ================= */
 .services-grid {
@@ -2006,8 +1969,5 @@ img {
   [data-reveal], .anim-fade-up, .hero-line-inner {
     opacity: 1 !important;
     transform: none !important;
-  }
-  .ambient-cursor {
-    display: none !important;
   }
 }

@@ -209,62 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ================= 6. Desktop Ambient Cursor Follower =================
-  if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    const cursor = document.createElement('div');
-    cursor.className = 'ambient-cursor';
-    document.body.appendChild(cursor);
 
-    let cursorX = -100;
-    let cursorY = -100;
-    let targetX = -100;
-    let targetY = -100;
-    let cursorActive = false;
-
-    window.addEventListener('mousemove', (e) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-      if (!cursorActive) {
-        cursorX = targetX;
-        cursorY = targetY;
-        cursor.classList.add('active');
-        cursorActive = true;
-      }
-    });
-
-    window.addEventListener('mouseleave', () => {
-      cursor.classList.remove('active');
-      cursorActive = false;
-    });
-
-    function renderCursor() {
-      if (cursorActive) {
-        cursorX += (targetX - cursorX) * 0.22;
-        cursorY += (targetY - cursorY) * 0.22;
-        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
-      }
-      requestAnimationFrame(renderCursor);
-    }
-    requestAnimationFrame(renderCursor);
-
-    // Magnify cursor over interactive elements
-    const interactiveSelector = 'a, button, .home-tab-card, .service-card, .skill-card, .sec-card, .lab-card, .faq-question, input, textarea, select';
-    document.addEventListener('mouseover', (e) => {
-      if (e.target.closest('.project-browser-frame')) {
-        cursor.classList.remove('active');
-        cursorActive = false;
-        return;
-      }
-      if (e.target.closest(interactiveSelector)) {
-        cursor.classList.add('hovering');
-      }
-    });
-    document.addEventListener('mouseout', (e) => {
-      if (e.target.closest(interactiveSelector)) {
-        cursor.classList.remove('hovering');
-      }
-    });
-  }
 
   // ================= 7. Interactive Tabs: Skills Filter =================
   const skillTabs = document.querySelectorAll('[data-skill-tab]');
