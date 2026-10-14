@@ -248,8 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(renderCursor);
 
     // Magnify cursor over interactive elements
-    const interactiveSelector = 'a, button, .home-tab-card, .service-card, .skill-card, .project-card, .sec-card, .lab-card, .faq-question, input, textarea, select';
+    const interactiveSelector = 'a, button, .home-tab-card, .service-card, .skill-card, .sec-card, .lab-card, .faq-question, input, textarea, select';
     document.addEventListener('mouseover', (e) => {
+      if (e.target.closest('.project-browser-frame')) {
+        cursor.classList.remove('active');
+        cursorActive = false;
+        return;
+      }
       if (e.target.closest(interactiveSelector)) {
         cursor.classList.add('hovering');
       }
