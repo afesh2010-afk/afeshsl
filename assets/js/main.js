@@ -1,10 +1,13 @@
 /**
- * AFESH S L — Personal Portfolio Scripts
- * Modular, clean, lightweight JavaScript
+ * AFESH S L — Personal Portfolio Interaction & Animation Engine
+ * Fluid, dependency-free, 60fps micro-interactions & motion design
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ================= 1. Theme Toggle (Dark / Light) =================
+  // Check user preference for reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ================= 1. Theme Toggle (Dark / Light) with Micro-Interaction =================
   const themeToggleBtn = document.getElementById('theme-toggle-btn');
   const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
   
@@ -16,6 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      // Add quick rotate animation
+      themeToggleBtn.style.transform = 'rotate(180deg) scale(0.9)';
+      setTimeout(() => {
+        themeToggleBtn.style.transform = '';
+      }, 300);
+
       if (isDark) {
         document.documentElement.removeAttribute('data-theme');
         localStorage.setItem('portfolio-theme', 'light');
@@ -34,7 +44,60 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
   }
 
-  // ================= 2. Multi-Tab Navigation & View Switcher =================
+  // ================= 2. Sticky Header Scroll Reaction =================
+  const header = document.querySelector('.header');
+  function handleHeaderScroll() {
+    if (!header) return;
+    if (window.scrollY > 24) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+  handleHeaderScroll();
+
+  // ================= 3. Scroll Reveal & Tab Pane Animation Engine =================
+  const revealElements = document.querySelectorAll('[data-reveal]');
+  
+  // Intersection Observer for scroll triggers
+  let revealObserver = null;
+  if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.08
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  } else {
+    // Immediate fallback for reduced motion or legacy browsers
+    revealElements.forEach(el => el.classList.add('is-revealed'));
+  }
+
+  function triggerPaneAnimations(pane) {
+    if (!pane) return;
+    const paneReveals = pane.querySelectorAll('[data-reveal]');
+    if (prefersReducedMotion) {
+      paneReveals.forEach(el => el.classList.add('is-revealed'));
+      return;
+    }
+
+    paneReveals.forEach((el, index) => {
+      // Stagger child elements smoothly
+      setTimeout(() => {
+        el.classList.add('is-revealed');
+      }, 40 * index);
+    });
+  }
+
+  // ================= 4. Multi-Tab Navigation & View Switcher =================
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const navLinks = document.getElementById('nav-links');
   const tabPanes = document.querySelectorAll('.tab-pane');
@@ -56,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show target tab pane
     targetPane.classList.add('active');
 
+    // Trigger sequential reveal animation for target pane
+    triggerPaneAnimations(targetPane);
+
     // Update active state on all nav-link and mobile-tab-btn elements
     document.querySelectorAll('.nav-link, .mobile-tab-btn').forEach(link => {
       const linkHref = (link.getAttribute('href') || link.getAttribute('data-tab-target') || '').replace(/^#/, '').trim();
@@ -66,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close mobile three-bar menu if open
+    // Close mobile menu if open
     if (navLinks && navLinks.classList.contains('show')) {
       navLinks.classList.remove('show');
       if (mobileMenuBtn) mobileMenuBtn.innerHTML = '☰';
@@ -124,7 +190,78 @@ document.addEventListener('DOMContentLoaded', () => {
     switchTab('home');
   }
 
-  // ================= 4. Interactive Tabs: Skills Filter =================
+  // ================= 5. Hero Dynamic Ambient Glow Pointer Interaction =================
+  const heroSection = document.getElementById('home');
+  if (heroSection && !prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let ticking = false;
+    heroSection.addEventListener('mousemove', (e) => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const rect = heroSection.getBoundingClientRect();
+          const x = Math.round(e.clientX - rect.left);
+          const y = Math.round(e.clientY - rect.top);
+          heroSection.style.setProperty('--mouse-x', `${x}px`);
+          heroSection.style.setProperty('--mouse-y', `${y}px`);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  // ================= 6. Desktop Ambient Cursor Follower =================
+  if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    const cursor = document.createElement('div');
+    cursor.className = 'ambient-cursor';
+    document.body.appendChild(cursor);
+
+    let cursorX = -100;
+    let cursorY = -100;
+    let targetX = -100;
+    let targetY = -100;
+    let cursorActive = false;
+
+    window.addEventListener('mousemove', (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!cursorActive) {
+        cursorX = targetX;
+        cursorY = targetY;
+        cursor.classList.add('active');
+        cursorActive = true;
+      }
+    });
+
+    window.addEventListener('mouseleave', () => {
+      cursor.classList.remove('active');
+      cursorActive = false;
+    });
+
+    function renderCursor() {
+      if (cursorActive) {
+        cursorX += (targetX - cursorX) * 0.22;
+        cursorY += (targetY - cursorY) * 0.22;
+        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+      }
+      requestAnimationFrame(renderCursor);
+    }
+    requestAnimationFrame(renderCursor);
+
+    // Magnify cursor over interactive elements
+    const interactiveSelector = 'a, button, .home-tab-card, .service-card, .skill-card, .project-card, .sec-card, .lab-card, .faq-question, input, textarea, select';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveSelector)) {
+        cursor.classList.add('hovering');
+      }
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest(interactiveSelector)) {
+        cursor.classList.remove('hovering');
+      }
+    });
+  }
+
+  // ================= 7. Interactive Tabs: Skills Filter =================
   const skillTabs = document.querySelectorAll('[data-skill-tab]');
   const skillCards = document.querySelectorAll('.skill-card');
 
@@ -140,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (category === 'all' || cardCategory === category) {
           card.style.display = 'flex';
           card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
           setTimeout(() => {
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
@@ -151,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 5. Interactive Tabs: Projects Filter =================
+  // ================= 8. Interactive Tabs: Projects Filter =================
   const projectTabs = document.querySelectorAll('[data-project-tab]');
   const projectCards = document.querySelectorAll('.project-card, .lab-card, .upcoming-project-card');
 
@@ -167,8 +305,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filter === 'all' || cardType === filter) {
           card.style.display = card.classList.contains('project-card') ? 'grid' : 'block';
           card.style.opacity = '0';
+          card.style.transform = 'translateY(12px)';
           setTimeout(() => {
             card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
           }, 20);
         } else {
           card.style.display = 'none';
@@ -177,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 6. Interactive FAQ Accordion =================
+  // ================= 9. Interactive FAQ Accordion with Smooth Ease =================
   const faqItems = document.querySelectorAll('.faq-item');
   faqItems.forEach(item => {
     const questionBtn = item.querySelector('.faq-question');
@@ -192,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ================= 7. WhatsApp Direct Project Inquiry =================
+  // ================= 10. WhatsApp Direct Project Inquiry =================
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
 
@@ -209,10 +349,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Display friendly status message
+      // Display friendly status message with animation
       if (formStatus) {
         formStatus.textContent = `Connecting you directly to AFESH's WhatsApp (+91 9744333783)...`;
-        formStatus.className = 'form-status-msg success';
+        formStatus.className = 'form-status-msg success is-revealed';
         formStatus.style.display = 'block';
       }
 
