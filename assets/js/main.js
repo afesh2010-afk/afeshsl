@@ -1,149 +1,186 @@
 /**
- * AFESH S L — Personal Portfolio Scripts
- * Modular, clean, lightweight JavaScript
+ * AFESH S L — PORTFOLIO INTERACTIVITY
+ * High-performance UI/UX behaviors inspired by mrgubot.com
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ================= 1. Theme Toggle (Dark / Light) =================
-  const themeToggleBtn = document.getElementById('theme-toggle-btn');
-  const savedTheme = localStorage.getItem('portfolio-theme') || 'light';
-  
-  if (savedTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    updateThemeIcon(true);
-  }
+  // ================= 1. Top Scroll Progress Indicator =================
+  const progressBar = document.getElementById('scroll-progress');
+  const siteHeader = document.querySelector('.site-header');
 
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('portfolio-theme', 'light');
-        updateThemeIcon(false);
+  window.addEventListener('scroll', () => {
+    const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = totalScroll > 0 ? (window.scrollY / totalScroll) * 100 : 0;
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+
+    // Scrolled header background blur
+    if (siteHeader) {
+      if (window.scrollY > 40) {
+        siteHeader.classList.add('scrolled');
       } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('portfolio-theme', 'dark');
-        updateThemeIcon(true);
+        siteHeader.classList.remove('scrolled');
       }
-    });
-  }
+    }
+  }, { passive: true });
 
-  function updateThemeIcon(isDark) {
-    if (!themeToggleBtn) return;
-    themeToggleBtn.innerHTML = isDark ? '☀️' : '🌙';
-    themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-
-  // ================= 2. Multi-Tab Navigation & View Switcher =================
+  // ================= 2. Mobile Drawer Navigation =================
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const navLinks = document.getElementById('nav-links');
-  const tabPanes = document.querySelectorAll('.tab-pane');
+  const mobileDrawer = document.getElementById('mobile-drawer');
 
-  function switchTab(targetId) {
-    if (!targetId) targetId = 'home';
-    const cleanId = targetId.replace(/^#/, '').trim();
-    const targetPane = document.getElementById(cleanId);
-
-    if (!targetPane || !targetPane.classList.contains('tab-pane')) {
-      return false;
-    }
-
-    // Hide all tab panes
-    tabPanes.forEach(pane => {
-      pane.classList.remove('active');
-    });
-
-    // Show target tab pane
-    targetPane.classList.add('active');
-
-    // Update active state on all nav-link and mobile-tab-btn elements
-    document.querySelectorAll('.nav-link, .mobile-tab-btn').forEach(link => {
-      const linkHref = (link.getAttribute('href') || link.getAttribute('data-tab-target') || '').replace(/^#/, '').trim();
-      if (linkHref === cleanId) {
-        link.classList.add('active');
-      } else {
-        link.classList.remove('active');
-      }
-    });
-
-    // Close mobile three-bar menu if open
-    if (navLinks && navLinks.classList.contains('show')) {
-      navLinks.classList.remove('show');
-      if (mobileMenuBtn) mobileMenuBtn.innerHTML = '☰';
-    }
-
-    // Smooth scroll to top of view
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Update hash in address bar without scrolling jump
-    if (window.location.hash !== `#${cleanId}`) {
-      if (history.pushState) {
-        history.pushState(null, null, `#${cleanId}`);
-      } else {
-        window.location.hash = `#${cleanId}`;
-      }
-    }
-
-    return true;
-  }
-
-  // Toggle mobile three-bar menu
-  if (mobileMenuBtn && navLinks) {
+  if (mobileMenuBtn && mobileDrawer) {
     mobileMenuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('show');
-      mobileMenuBtn.innerHTML = navLinks.classList.contains('show') ? '✕' : '☰';
+      mobileDrawer.classList.toggle('open');
+      mobileMenuBtn.innerHTML = mobileDrawer.classList.contains('open') ? '✕' : '☰';
+    });
+
+    // Close drawer when clicking any mobile nav link
+    mobileDrawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileDrawer.classList.remove('open');
+        mobileMenuBtn.innerHTML = '☰';
+      });
     });
   }
 
-  // Intercept all links targeting tab panes across header, cards, hero, and footer
-  document.body.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href^="#"], button[data-tab-target]');
-    if (!link) return;
+  // ================= 3. Scrollspy for Active Nav Items =================
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item, .mobile-nav-link');
 
-    const href = link.getAttribute('href') || link.getAttribute('data-tab-target');
-    if (!href || href === '#' || href === '#!') return;
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY + 200;
 
-    const targetId = href.replace(/^#/, '').trim();
-    const targetElement = document.getElementById(targetId);
+    sections.forEach(sec => {
+      const top = sec.offsetTop;
+      const height = sec.offsetHeight;
+      const id = sec.getAttribute('id');
 
-    if (targetElement && targetElement.classList.contains('tab-pane')) {
-      e.preventDefault();
-      switchTab(targetId);
+      if (scrollPos >= top && scrollPos < top + height) {
+        navItems.forEach(item => {
+          const href = (item.getAttribute('href') || '').replace('#', '');
+          if (href === id) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+      }
+    });
+  }, { passive: true });
+
+  // ================= 4. Interactive Solution Configurator (Mr. Gubot Style) =================
+  const projectTypeBtns = document.querySelectorAll('.config-select-btn');
+  const tierBtns = document.querySelectorAll('.tier-btn');
+  const quoteWaBtn = document.getElementById('config-quote-btn');
+  const summaryTypeEl = document.getElementById('summary-project-type');
+  const summaryTierEl = document.getElementById('summary-tier-name');
+  const summaryTimeEl = document.getElementById('summary-timeline');
+  const summaryLayersEl = document.getElementById('summary-layers-count');
+
+  let currentProjectType = 'Full-Stack Web App';
+  let currentTier = 'AI-Powered Suite';
+  let currentTimeline = '2–3 Weeks';
+  let currentLayers = '5 Layers';
+
+  // Architectures mapping
+  const projectScopeConfig = {
+    'portfolio': { name: 'Personal Portfolio', baseDays: '3–5 Days' },
+    'business': { name: 'Business / Brand Site', baseDays: '1–2 Weeks' },
+    'webapp': { name: 'Full-Stack Web App', baseDays: '2–3 Weeks' },
+    'security': { name: 'Security Audit & Hardening', baseDays: '4–7 Days' }
+  };
+
+  const tierConfig = {
+    'foundation': { name: 'Foundation Tier', suffix: 'Core Stack', timeMod: '1 Week', layers: '3 Architecture Layers' },
+    'fullstack': { name: 'Pro Full-Stack', suffix: 'DB & API Engine', timeMod: '1–2 Weeks', layers: '4 Architecture Layers' },
+    'ai': { name: 'AI-Powered Suite', suffix: 'Gemini + Automation', timeMod: '2–3 Weeks', layers: '5 Architecture Layers' },
+    'enterprise': { name: 'Enterprise Hardened', suffix: 'Zero-Trust Defense', timeMod: '3–4 Weeks', layers: '6 Architecture Layers' }
+  };
+
+  function updateConfigurator() {
+    if (summaryTypeEl) summaryTypeEl.textContent = currentProjectType;
+    if (summaryTierEl) summaryTierEl.textContent = currentTier;
+    if (summaryTimeEl) summaryTimeEl.textContent = currentTimeline;
+    if (summaryLayersEl) summaryLayersEl.textContent = currentLayers;
+
+    // Update WhatsApp pre-filled button
+    if (quoteWaBtn) {
+      const waNumber = '919744333783';
+      const text = `Hi AFESH — I'd like a quote for a ${currentProjectType} with the ${currentTier} configuration. Estimated delivery window: ${currentTimeline}. Can we discuss milestones and availability?`;
+      quoteWaBtn.href = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
+      quoteWaBtn.innerHTML = `
+        <svg viewBox="0 0 48 48" width="18" height="18" style="fill:#25D366;flex-shrink:0;">
+          <circle cx="24" cy="24" r="22" fill="#25D366"/>
+          <path fill="#FFFFFF" d="M34.2 13.8C31.5 11.1 27.9 9.6 24.1 9.6 16.3 9.6 10 15.9 10 23.7c0 2.5.6 4.9 1.8 7.1L10 38l7.4-1.9c2.1 1.1 4.4 1.7 6.7 1.7 7.8 0 14.1-6.3 14.1-14.1 0-3.8-1.5-7.4-4-9.9zm-10.1 21.8c-2.1 0-4.1-.6-5.9-1.6l-.4-.2-4.4 1.1 1.2-4.3-.3-.4c-1.2-1.9-1.8-4-1.8-6.2 0-6.5 5.3-11.8 11.8-11.8 3.2 0 6.1 1.2 8.4 3.5 2.2 2.2 3.5 5.2 3.5 8.4 0 6.5-5.3 11.5-12.5 11.5zm6.8-8.6c-.4-.2-2.2-1.1-2.5-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.5-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3.1-1.9-1.1-1-1.9-2.3-2.1-2.7-.2-.4 0-.6.2-.8.2-.2.4-.4.6-.7.2-.2.3-.4.4-.6.1-.2.1-.4 0-.6-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.7-.9-.7h-.7c-.3 0-.7.1-1 .5-.4.4-1.4 1.4-1.4 3.3 0 2 1.4 3.8 1.6 4.1.2.3 2.8 4.3 6.8 6 1 .4 1.7.7 2.3.9 1 .3 1.9.3 2.6.2.8-.1 2.4-1 2.7-1.9.4-.9.4-1.7.3-1.9-.2-.2-.4-.3-.8-.5z"/>
+        </svg>
+        <span>Build on WhatsApp</span>
+      `;
     }
-  });
 
-  // Handle browser Back / Forward buttons
-  window.addEventListener('popstate', () => {
-    const hash = window.location.hash || '#home';
-    switchTab(hash);
-  });
-
-  // Initialize active tab from URL hash on first page load
-  const initialHash = window.location.hash || '#home';
-  if (!switchTab(initialHash)) {
-    switchTab('home');
+    // Animate visual layer blocks
+    const layers = document.querySelectorAll('.arch-layer');
+    layers.forEach((layer, idx) => {
+      layer.style.transform = 'scale(0.98)';
+      setTimeout(() => {
+        layer.style.transform = 'scale(1)';
+      }, 50 * idx);
+    });
   }
 
-  // ================= 4. Interactive Tabs: Skills Filter =================
-  const skillTabs = document.querySelectorAll('[data-skill-tab]');
-  const skillCards = document.querySelectorAll('.skill-card');
+  // Handle Project Type click
+  projectTypeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      projectTypeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-  skillTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      skillTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+      const scopeKey = btn.getAttribute('data-scope') || 'webapp';
+      if (projectScopeConfig[scopeKey]) {
+        currentProjectType = projectScopeConfig[scopeKey].name;
+      }
+      updateConfigurator();
+    });
+  });
 
-      const category = tab.getAttribute('data-skill-tab');
+  // Handle Tier click
+  tierBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tierBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-      skillCards.forEach(card => {
-        const cardCategory = card.getAttribute('data-category');
-        if (category === 'all' || cardCategory === category) {
+      const tierKey = btn.getAttribute('data-tier') || 'ai';
+      if (tierConfig[tierKey]) {
+        currentTier = tierConfig[tierKey].name;
+        currentTimeline = tierConfig[tierKey].timeMod;
+        currentLayers = tierConfig[tierKey].layers;
+      }
+      updateConfigurator();
+    });
+  });
+
+  // Initial configurator call
+  updateConfigurator();
+
+  // ================= 5. Featured Projects Filter =================
+  const filterBtns = document.querySelectorAll('.project-filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.getAttribute('data-filter') || 'all';
+
+      projectCards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
           card.style.display = 'flex';
           card.style.opacity = '0';
           setTimeout(() => {
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
-          }, 20);
+          }, 30);
         } else {
           card.style.display = 'none';
         }
@@ -151,85 +188,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ================= 5. Interactive Tabs: Projects Filter =================
-  const projectTabs = document.querySelectorAll('[data-project-tab]');
-  const projectCards = document.querySelectorAll('.project-card, .lab-card, .upcoming-project-card');
-
-  projectTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      projectTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      const filter = tab.getAttribute('data-project-tab');
-
-      projectCards.forEach(card => {
-        const cardType = card.getAttribute('data-project-type');
-        if (filter === 'all' || cardType === filter) {
-          card.style.display = card.classList.contains('project-card') ? 'grid' : 'block';
-          card.style.opacity = '0';
-          setTimeout(() => {
-            card.style.opacity = '1';
-          }, 20);
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
-
-  // ================= 6. Interactive FAQ Accordion =================
+  // ================= 6. FAQ Accordion =================
   const faqItems = document.querySelectorAll('.faq-item');
   faqItems.forEach(item => {
-    const questionBtn = item.querySelector('.faq-question');
-    if (questionBtn) {
-      questionBtn.addEventListener('click', () => {
-        const isActive = item.classList.contains('active');
+    const header = item.querySelector('.faq-header');
+    if (header) {
+      header.addEventListener('click', () => {
+        const wasActive = item.classList.contains('active');
         faqItems.forEach(i => i.classList.remove('active'));
-        if (!isActive) {
+        if (!wasActive) {
           item.classList.add('active');
         }
       });
     }
   });
 
-  // ================= 7. WhatsApp Direct Project Inquiry =================
+  // ================= 7. Contact Form WhatsApp Pipe =================
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
 
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('sender-name').value.trim();
-      const email = document.getElementById('sender-email').value.trim();
-      const service = document.getElementById('sender-service') ? document.getElementById('sender-service').value : 'Project Inquiry';
-      const message = document.getElementById('sender-message').value.trim();
+      const name = document.getElementById('form-name').value.trim();
+      const email = document.getElementById('form-email').value.trim();
+      const service = document.getElementById('form-service').value.trim();
+      const message = document.getElementById('form-message').value.trim();
 
       if (!name || !email || !message) {
         alert('Please fill out all required fields.');
         return;
       }
 
-      // Display friendly status message
       if (formStatus) {
-        formStatus.textContent = `Connecting you directly to AFESH's WhatsApp (+91 9744333783)...`;
-        formStatus.className = 'form-status-msg success';
+        formStatus.textContent = `Connecting you to AFESH on WhatsApp (+91 9744333783)...`;
         formStatus.style.display = 'block';
+        formStatus.style.color = '#00E5FF';
       }
 
-      // Format WhatsApp Message
       const waNumber = '919744333783';
-      const formattedText = `*New Project Inquiry (via afeshsl.in)*%0A%0A` +
+      const formattedText = `*Project Inquiry (via afeshsl.in)*%0A%0A` +
         `*Name:* ${encodeURIComponent(name)}%0A` +
         `*Email:* ${encodeURIComponent(email)}%0A` +
-        `*Service:* ${encodeURIComponent(service)}%0A%0A` +
-        `*Project Details:*%0A${encodeURIComponent(message)}`;
+        `*Focus:* ${encodeURIComponent(service)}%0A%0A` +
+        `*Message:*%0A${encodeURIComponent(message)}`;
 
       const waUrl = `https://wa.me/${waNumber}?text=${formattedText}`;
 
-      // Open WhatsApp in a new tab or app window
       setTimeout(() => {
         window.open(waUrl, '_blank');
-      }, 500);
+      }, 400);
 
       contactForm.reset();
     });
